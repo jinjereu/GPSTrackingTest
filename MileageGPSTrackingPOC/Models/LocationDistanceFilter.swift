@@ -9,8 +9,6 @@
 import Foundation
 import CoreLocation
 
-
-
 enum LocationDistanceFilter: CLLocationDistance {
     case none = 0
     case ten = 10

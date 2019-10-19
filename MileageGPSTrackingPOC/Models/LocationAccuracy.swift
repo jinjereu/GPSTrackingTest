@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum LocationAccuracy: Double {
     case bestForNavigation
     case best

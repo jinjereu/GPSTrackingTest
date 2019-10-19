@@ -14,7 +14,7 @@ extension CLActivityType {
     var displayName: String {
         switch self {
         case .automotiveNavigation:
-            return "Automative Navigation"
+            return "Automotive Navigation"
         case .fitness:
             return "Fitness"
         case .other:

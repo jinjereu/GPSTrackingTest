@@ -9,20 +9,31 @@
 import UIKit
 import CoreLocation
 
+protocol SettingsViewControllerDelegate: class {
+    func settingsViewDidDismiss(with settings: AppSettings)
+}
+
 enum SettingsViewSection: Int {
     case activityType = 0
     case accuracy = 1
     case distanceFilter = 2
+    case howRecentThreshold = 3
+    case horizontalAccuracyThreshold = 4
 }
 
 class SettingsViewController: UIViewController {
 
     //MARK: IBOutlet
+
     @IBOutlet weak var tableView: UITableView!
 
-    internal lazy var locationSettings: LocationSettings = LocationSettingsServices.shared.getLocationSettings()
+    //MARK: Properties
+
+    weak var delegate: SettingsViewControllerDelegate?
+    internal lazy var appSettings: AppSettings = AppSettingsServices.shared.getAppSettings()
 
     //MARK: View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,8 +41,17 @@ class SettingsViewController: UIViewController {
     }
 
     //MARK: IBActions
+
     @IBAction func doneButtonTapped(_ sender: Any) {
-        LocationSettingsServices.shared.setLocationSettings(locationSettings)
+        AppSettingsServices.shared.setAppSettings(appSettings)
+        delegate?.settingsViewDidDismiss(with: appSettings)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
+
+    @IBAction func resetButtonTapped(_ sender: Any) {
+        appSettings = AppSettingsServices.shared.resetAppSettings()
+        tableView.reloadData()
+    }
+
 
 }

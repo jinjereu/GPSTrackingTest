@@ -13,7 +13,7 @@ import CoreLocation
 extension SettingsViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 6
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -24,6 +24,10 @@ extension SettingsViewController: UITableViewDataSource {
             return "Location Accuracy"
         case SettingsViewSection.distanceFilter.rawValue:
             return "Location Distance Filter"
+        case SettingsViewSection.howRecentThreshold.rawValue:
+            return "How Recent Threshold"
+        case SettingsViewSection.horizontalAccuracyThreshold.rawValue:
+            return "Horizontal Accuracy Threshold"
         default:
             return ""
         }
@@ -37,6 +41,10 @@ extension SettingsViewController: UITableViewDataSource {
             return LocationAccuracy.allValues.count
         case SettingsViewSection.distanceFilter.rawValue:
             return LocationDistanceFilter.allValues.count
+        case SettingsViewSection.howRecentThreshold.rawValue:
+            return HowRecentThreshold.allValues.count
+        case SettingsViewSection.horizontalAccuracyThreshold.rawValue:
+            return LocationHorizontalAccuracyThreshold.allValues.count
         default:
             return 0
         }
@@ -52,7 +60,7 @@ extension SettingsViewController: UITableViewDataSource {
 
     func prepare(_ cell: UITableViewCell, at indexPath: IndexPath) -> UITableViewCell {
 
-        let settings = locationSettings
+        let settings = appSettings
 
         var textLabel = ""
         var accessoryType = UITableViewCell.AccessoryType.none
@@ -70,6 +78,14 @@ extension SettingsViewController: UITableViewDataSource {
             let distanceFilter = LocationDistanceFilter.allValues[indexPath.row]
             textLabel = String(distanceFilter.rawValue)
             accessoryType = settings.distanceFilter == distanceFilter ? .checkmark : .none
+        case SettingsViewSection.howRecentThreshold.rawValue:
+            let threshold = HowRecentThreshold.allValues[indexPath.row]
+            textLabel = String(threshold.rawValue)
+            accessoryType = settings.howRecentThreshold == threshold ? .checkmark : .none
+        case SettingsViewSection.horizontalAccuracyThreshold.rawValue:
+            let threshold = LocationHorizontalAccuracyThreshold.allValues[indexPath.row]
+            textLabel = String(threshold.rawValue)
+            accessoryType = settings.horizontalAccuracyThreshold == threshold ? .checkmark : .none
         default:
             fatalError("Content not supported")
         }
@@ -86,7 +102,7 @@ extension SettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let settings = locationSettings
+        let settings = appSettings
 
         switch indexPath.section {
         case SettingsViewSection.activityType.rawValue:
@@ -95,6 +111,10 @@ extension SettingsViewController: UITableViewDelegate {
             settings.accuracy = LocationAccuracy.allValues[indexPath.row]
         case SettingsViewSection.distanceFilter.rawValue:
             settings.distanceFilter = LocationDistanceFilter.allValues[indexPath.row]
+        case SettingsViewSection.howRecentThreshold.rawValue:
+            settings.howRecentThreshold = HowRecentThreshold.allValues[indexPath.row]
+        case SettingsViewSection.horizontalAccuracyThreshold.rawValue:
+            settings.horizontalAccuracyThreshold = LocationHorizontalAccuracyThreshold.allValues[indexPath.row]
         default:
             fatalError("Content not supported")
         }

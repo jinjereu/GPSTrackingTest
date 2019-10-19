@@ -11,7 +11,6 @@ import CoreLocation
 import MapKit
 
 enum TripViewState {
-    case initializing
     case new
     case tracking
     case saved
@@ -34,27 +33,26 @@ class TripViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
 
     //MARK: Properties
+    private var tripState: TripViewState?
 
     private var trip: Trip?
-    private var tripState: TripViewState?
     private let locationManager = CLLocationManager()
+    private var appSettings = AppSettingsServices.shared.getAppSettings()
 
-    //TODO: Declare a ViewModel
-    //TODO: Also create a helper for initializing the data
-    //private let locationManager = LocationManager.shared
+    //TODO: Declare a ViewModel, Also create a helper for initializing the data
     //To track the duration of the run
     private var seconds = 0
     //Used to update the UI per second
     private var timer: Timer?
     //Hold the cumulative distance
     private var distanceTravelled: Measurement<UnitLength> = Measurement(value: 0, unit: UnitLength.meters)
+    //Hold all the locations detectied
     private var locationList: [CLLocation] = []
-
+    //Hold value for the selected unit from the toggle
     private var selectedUnit: UnitLength = .miles {
         didSet {
             //Update the view
             unitLabel.text = "Unit: \(selectedUnit.name)"
-            distanceTravelled = Measurement(value: 0, unit: UnitLength.meters)
         }
     }
 
@@ -62,16 +60,17 @@ class TripViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateViewState(.initializing)
+        updateViewState(.new)
+        setupLocationManager()
+
         selectedUnit = .miles
-        locationManager.delegate = self
+        distanceTravelled = Measurement(value: 0, unit: UnitLength.meters)
     }
 
     //MARK: IBActions
 
     @IBAction func startTripTapped(_ sender: Any) {
-        //Check location services
-        checkLocationServices()
+        startTrip()
     }
 
     @IBAction func stopTripTapped(_ sender: Any) {
@@ -79,7 +78,9 @@ class TripViewController: UIViewController {
         let alertController = UIAlertController(title: "End trip?",
                                                 message: "Do you wish to end your trip?",
                                                 preferredStyle: .actionSheet)
+
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
         alertController.addAction(UIAlertAction(title: "Save", style: .default) { [weak self] _ in
             guard let `self` = self else { return }
             self.stopTrip()
@@ -93,6 +94,7 @@ class TripViewController: UIViewController {
 
             self.updateViewState(.saved)
         })
+
         alertController.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
             guard let `self` = self else { return }
             self.stopTrip()
@@ -119,42 +121,29 @@ class TripViewController: UIViewController {
 
     private func updateViewState(_ state: TripViewState) {
         switch state {
-        case .initializing:
-            dataStackView.isHidden = true
-            startTripButton.isHidden = true
-            stopTripButton.isHidden = true
-            fromLabel.isHidden = true
-            toLabel.isHidden = true
-            useTripButton.isHidden = true
-            mapView.isHidden = true
-            unitSwitch.isHidden = true
-            updateViewState(.new)
         case .new:
             dataStackView.isHidden = false
             startTripButton.isHidden = false
             stopTripButton.isHidden = true
+            distanceLabel.isHidden = true
             fromLabel.isHidden = true
             toLabel.isHidden = true
             useTripButton.isHidden = true
             unitSwitch.isHidden = false
             mapView.isHidden = true
         case .tracking:
-            dataStackView.isHidden = false
             startTripButton.isHidden = true
             stopTripButton.isHidden = false
+            distanceLabel.isHidden = false
             fromLabel.isHidden = false
             toLabel.isHidden = true
-            useTripButton.isHidden = true
             unitSwitch.isHidden = true
             mapView.isHidden = true
         case .saved:
-            dataStackView.isHidden = false
-            startTripButton.isHidden = true
             stopTripButton.isHidden = true
             fromLabel.isHidden = false
             toLabel.isHidden = false
             useTripButton.isHidden = false
-            unitSwitch.isHidden = true
             mapView.isHidden = false
         case .error:
             dataStackView.isHidden = false
@@ -169,6 +158,13 @@ class TripViewController: UIViewController {
     }
 
     //MARK: Application Logic
+
+    private func setupLocationManager() {
+        locationManager.activityType = appSettings.activityType
+        locationManager.distanceFilter = appSettings.distanceFilter.rawValue
+        locationManager.desiredAccuracy = appSettings.accuracy.rawValue
+        locationManager.delegate = self
+    }
 
     private func startTrip() {
         updateViewState(.tracking)
@@ -186,6 +182,7 @@ class TripViewController: UIViewController {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             self.eachSecond()
         }
+
         startLocationUpdates()
     }
 
@@ -217,7 +214,6 @@ class TripViewController: UIViewController {
 
         trip = newTrip
     }
-
 
     private func getAddresses() {
         //Get the addresses
@@ -276,57 +272,16 @@ class TripViewController: UIViewController {
         present(alert, animated: true) {}
     }
 
-    private func showPermissionsAlert() {
-        let alert = UIAlertController.init(title: "Sorry", message: "Please enable your location services.",
-                                           preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
-        let settings = UIAlertAction(title: "Settings", style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancel)
-        alert.addAction(settings)
-        present(alert, animated: true) {}
-    }
-
-    private func checkLocationServices() {
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined:
-            // Request when-in-use authorization initially
-            locationManager.requestAlwaysAuthorization()
-            break
-        case .restricted, .denied:
-            // Disable location features
-            showPermissionsAlert()
-            updateViewState(.initializing)
-            break
-
-        case .authorizedWhenInUse:
-            //TODO: This should instead ask user again to update their settings to always in use
-            startTrip()
-            break
-
-        case .authorizedAlways:
-            // Only start location updates if the user has authorized Always Use
-            startTrip()
-            break
-        @unknown default:
-            fatalError("Unknown case")
-        }
-    }
-
     private func startLocationUpdates() {
         //TODO: Check pausesLocationUpdatesAutomatically in order to restart the location services when it is
         //automatically paused by the system
-        locationManager.activityType = .automotiveNavigation
-        //Updates the distance filter
-        locationManager.distanceFilter = 10
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest //kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
     }
 
 }
 
 extension TripViewController {
+
     private func loadMap() {
         guard
             let locations = trip?.locations,
@@ -457,8 +412,9 @@ extension TripViewController: CLLocationManagerDelegate {
         let howRecent = newLocation.timestamp.timeIntervalSinceNow
 
         //Also checking the accuracy of the reading. If the device isnt confident that it is not within 20 meters of user's actual location don't consider this data at all
-        //guard newLocation.horizontalAccuracy < 20 else { return } //&& abs(howRecent) < 10 else { continue }
-        //Commented the above one out so it can properly track the locations when just walking
+        guard newLocation.horizontalAccuracy < appSettings.horizontalAccuracyThreshold.rawValue
+            && abs(howRecent) < appSettings.howRecentThreshold.rawValue else { continue }
+        //For testing can commented the above one out so it can properly track the locations when just walking
 
         if let lastLocation = locationList.last {
           //Calculating the distance from the last location
@@ -474,22 +430,29 @@ extension TripViewController: CLLocationManagerDelegate {
     }
 }
 
-extension TripViewController: SegueHandlerType {
-  enum SegueIdentifier: String {
-    case tripLogs = "TripLogsViewController"
-    case locationSettings = "LocationSettingsViewController"
-  }
-
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    switch segueIdentifier(for: segue) {
-    case .tripLogs:
-      let destination = segue.destination as! TripLogsViewController
-      destination.locationList = locationList
-    case .locationSettings:
-        print("redirecting to location settings")
+extension TripViewController: SettingsViewControllerDelegate {
+    func settingsViewDidDismiss(with settings: AppSettings) {
+        appSettings = settings
+        setupLocationManager()
     }
-  }
 }
 
+extension TripViewController: SegueHandlerType {
+    enum SegueIdentifier: String {
+        case tripLogs = "TripLogsViewController"
+        case locationSettings = "LocationSettingsViewController"
+    }
 
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .tripLogs:
+            let destination = segue.destination as! TripLogsViewController
+            destination.locationList = locationList
+        case .locationSettings:
+            if let nav = segue.destination as? UINavigationController,
+                let destination = nav.children.first as? SettingsViewController {
+                destination.delegate = self
+            }
+        }
+    }
+}

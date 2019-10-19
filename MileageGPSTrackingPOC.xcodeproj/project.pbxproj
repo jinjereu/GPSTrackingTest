@@ -12,7 +12,7 @@
 		1C3A59352359188B002A0E4E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A59342359188B002A0E4E /* SettingsViewController.swift */; };
 		1C3A593723594628002A0E4E /* LocationAccuracy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A593623594628002A0E4E /* LocationAccuracy.swift */; };
 		1C3A593923594643002A0E4E /* LocationDistanceFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A593823594643002A0E4E /* LocationDistanceFilter.swift */; };
-		1C3A593B23594678002A0E4E /* LocationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A593A23594678002A0E4E /* LocationSettings.swift */; };
+		1C3A593B23594678002A0E4E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A593A23594678002A0E4E /* Settings.swift */; };
 		1C3A593D235946BF002A0E4E /* CLActivityTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A593C235946BF002A0E4E /* CLActivityTypeExtension.swift */; };
 		1C3A593F23594723002A0E4E /* SettingsViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3A593E23594723002A0E4E /* SettingsViewController+TableView.swift */; };
 		1CB31039235527D500C40462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31038235527D500C40462 /* AppDelegate.swift */; };
@@ -28,10 +28,11 @@
 		1CB310AE2356787F00C40462 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB310AD2356787F00C40462 /* CoreDataStack.swift */; };
 		1CB310B42356983000C40462 /* FormatDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB310B22356983000C40462 /* FormatDisplay.swift */; };
 		1CB310B52356983000C40462 /* UnitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB310B32356983000C40462 /* UnitExtensions.swift */; };
-		1CE3B84A235B09190024B2C4 /* LocationSettingsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3B849235B09190024B2C4 /* LocationSettingsServices.swift */; };
 		1CE3B84C235B0F800024B2C4 /* PastTripsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3B84B235B0F800024B2C4 /* PastTripsViewController.swift */; };
 		1CE3B84F235B10BA0024B2C4 /* PastTripTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3B84D235B10BA0024B2C4 /* PastTripTableViewCell.swift */; };
 		1CE3B850235B10BA0024B2C4 /* PastTripTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1CE3B84E235B10BA0024B2C4 /* PastTripTableViewCell.xib */; };
+		1CE3B855235B41B80024B2C4 /* LocationThreshold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3B854235B41B80024B2C4 /* LocationThreshold.swift */; };
+		1CE3B858235B43680024B2C4 /* AppSettingsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3B857235B43680024B2C4 /* AppSettingsServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +58,7 @@
 		1C3A59342359188B002A0E4E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1C3A593623594628002A0E4E /* LocationAccuracy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracy.swift; sourceTree = "<group>"; };
 		1C3A593823594643002A0E4E /* LocationDistanceFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDistanceFilter.swift; sourceTree = "<group>"; };
-		1C3A593A23594678002A0E4E /* LocationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettings.swift; sourceTree = "<group>"; };
+		1C3A593A23594678002A0E4E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		1C3A593C235946BF002A0E4E /* CLActivityTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLActivityTypeExtension.swift; sourceTree = "<group>"; };
 		1C3A593E23594723002A0E4E /* SettingsViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+TableView.swift"; sourceTree = "<group>"; };
 		1CB31035235527D500C40462 /* MileageGPSTrackingPOC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MileageGPSTrackingPOC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,10 +80,11 @@
 		1CB310AD2356787F00C40462 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		1CB310B22356983000C40462 /* FormatDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatDisplay.swift; sourceTree = "<group>"; };
 		1CB310B32356983000C40462 /* UnitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitExtensions.swift; sourceTree = "<group>"; };
-		1CE3B849235B09190024B2C4 /* LocationSettingsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsServices.swift; sourceTree = "<group>"; };
 		1CE3B84B235B0F800024B2C4 /* PastTripsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTripsViewController.swift; sourceTree = "<group>"; };
 		1CE3B84D235B10BA0024B2C4 /* PastTripTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTripTableViewCell.swift; sourceTree = "<group>"; };
 		1CE3B84E235B10BA0024B2C4 /* PastTripTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PastTripTableViewCell.xib; sourceTree = "<group>"; };
+		1CE3B854235B41B80024B2C4 /* LocationThreshold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationThreshold.swift; sourceTree = "<group>"; };
+		1CE3B857235B43680024B2C4 /* AppSettingsServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettingsServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +118,8 @@
 				1C3A59222357EE2D002A0E4E /* Location+MKAnnotation.swift */,
 				1C3A593623594628002A0E4E /* LocationAccuracy.swift */,
 				1C3A593823594643002A0E4E /* LocationDistanceFilter.swift */,
-				1C3A593A23594678002A0E4E /* LocationSettings.swift */,
+				1CE3B854235B41B80024B2C4 /* LocationThreshold.swift */,
+				1C3A593A23594678002A0E4E /* Settings.swift */,
 				1C3A593C235946BF002A0E4E /* CLActivityTypeExtension.swift */,
 			);
 			path = Models;
@@ -277,7 +280,7 @@
 		1CE3B848235B08FE0024B2C4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1CE3B849235B09190024B2C4 /* LocationSettingsServices.swift */,
+				1CE3B857235B43680024B2C4 /* AppSettingsServices.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -425,12 +428,13 @@
 			files = (
 				1CE3B84F235B10BA0024B2C4 /* PastTripTableViewCell.swift in Sources */,
 				1CB310AB235677ED00C40462 /* MileageGPSTracking.xcdatamodeld in Sources */,
+				1CE3B858235B43680024B2C4 /* AppSettingsServices.swift in Sources */,
 				1C3A59232357EE2D002A0E4E /* Location+MKAnnotation.swift in Sources */,
 				1C3A592B2357F6AD002A0E4E /* TripLogsViewController.swift in Sources */,
 				1CE3B84C235B0F800024B2C4 /* PastTripsViewController.swift in Sources */,
 				1C3A593D235946BF002A0E4E /* CLActivityTypeExtension.swift in Sources */,
 				1C3A593F23594723002A0E4E /* SettingsViewController+TableView.swift in Sources */,
-				1C3A593B23594678002A0E4E /* LocationSettings.swift in Sources */,
+				1C3A593B23594678002A0E4E /* Settings.swift in Sources */,
 				1CB310B52356983000C40462 /* UnitExtensions.swift in Sources */,
 				1CB31039235527D500C40462 /* AppDelegate.swift in Sources */,
 				1CB310A02356708000C40462 /* LocationManager.swift in Sources */,
@@ -438,9 +442,9 @@
 				1CB310AE2356787F00C40462 /* CoreDataStack.swift in Sources */,
 				1CB310A4235672EA00C40462 /* TripViewController.swift in Sources */,
 				1CB310B42356983000C40462 /* FormatDisplay.swift in Sources */,
+				1CE3B855235B41B80024B2C4 /* LocationThreshold.swift in Sources */,
 				1C3A593723594628002A0E4E /* LocationAccuracy.swift in Sources */,
 				1C3A593923594643002A0E4E /* LocationDistanceFilter.swift in Sources */,
-				1CE3B84A235B09190024B2C4 /* LocationSettingsServices.swift in Sources */,
 				1C3A59352359188B002A0E4E /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

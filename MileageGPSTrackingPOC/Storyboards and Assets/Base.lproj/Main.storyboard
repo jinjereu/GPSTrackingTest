@@ -54,6 +54,11 @@
                         <viewLayoutGuide key="safeArea" id="9zH-q8-Eac"/>
                     </view>
                     <navigationItem key="navigationItem" id="j4z-JO-hos">
+                        <barButtonItem key="leftBarButtonItem" title="Reset" id="OUE-WJ-5Bk">
+                            <connections>
+                                <action selector="resetButtonTapped:" destination="TQG-nG-TXF" id="csX-9f-v8f"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="IKK-Bo-Ejw">
                             <connections>
                                 <action selector="doneButtonTapped:" destination="TQG-nG-TXF" id="W0v-Ah-YLt"/>
@@ -97,12 +102,13 @@
                     <navigationItem key="navigationItem" id="XXP-ms-DtH">
                         <barButtonItem key="rightBarButtonItem" title="New Trip" id="9WH-kQ-BTv">
                             <connections>
-                                <segue destination="wTM-cQ-8yg" kind="show" id="dWs-eR-4yp"/>
+                                <action selector="newTripButtonTapped:" destination="BYZ-38-t0r" id="bb9-CI-0Cr"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="pastTripsTableView" destination="El6-XH-dnB" id="BOT-95-87X"/>
+                        <segue destination="wTM-cQ-8yg" kind="show" identifier="TripViewController" id="oqy-8h-TZB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

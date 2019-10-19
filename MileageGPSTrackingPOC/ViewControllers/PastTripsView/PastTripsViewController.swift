@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
 
 class PastTripsViewController: UIViewController {
 
+    //MARK: IBOutlets
+
     @IBOutlet weak var pastTripsTableView: UITableView!
 
+    //MARK: Properties
+
     private lazy var trips = [Trip]()
+    private let locationManager = LocationManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +31,14 @@ class PastTripsViewController: UIViewController {
         }
     }
 
+    //MARK: IBActions
+
+    @IBAction func newTripButtonTapped(_ sender: Any) {
+        newTrip()
+    }
+
     //MARK: Private Methods
+
     private func setupView() {
         title = "Trips"
         setupTableView()
@@ -36,6 +49,46 @@ class PastTripsViewController: UIViewController {
                                     forCellReuseIdentifier: PastTripTableViewCell.id)
         pastTripsTableView.rowHeight = UITableView.automaticDimension
         pastTripsTableView.estimatedRowHeight = 160
+    }
+
+    private func newTrip() {
+        //Determine correct action
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            // Request when-in-use authorization initially
+            locationManager.requestAlwaysAuthorization()
+            break
+        case .restricted, .denied:
+            showPermissionsAlert()
+            break
+
+        case .authorizedWhenInUse:
+            //TODO: Ask user again to update their settings to always in use
+            continueToNewTrip()
+            break
+
+        case .authorizedAlways:
+            continueToNewTrip()
+            break
+        @unknown default:
+            fatalError("Unknown case")
+        }
+    }
+
+    private func showPermissionsAlert() {
+        let alert = UIAlertController.init(title: "Sorry", message: "Please enable your location services.",
+                                           preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+        let settings = UIAlertAction(title: "Settings", style: .default) { _ in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }
+        alert.addAction(cancel)
+        alert.addAction(settings)
+        present(alert, animated: true) {}
+    }
+
+    private func continueToNewTrip() {
+        self.performSegue(withIdentifier: .tripView, sender: nil)
     }
 
     //MARK: Data
@@ -49,7 +102,6 @@ class PastTripsViewController: UIViewController {
             completion([], true)
         }
     }
-
 
 }
 
@@ -74,4 +126,17 @@ extension PastTripsViewController: UITableViewDataSource {
         return cell
     }
 
+}
+
+extension PastTripsViewController: SegueHandlerType {
+  enum SegueIdentifier: String {
+    case tripView = "TripViewController"
+  }
+
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    switch segueIdentifier(for: segue) {
+    case .tripView:
+      print("redirecting to trip view")
+    }
+  }
 }
