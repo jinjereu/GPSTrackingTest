@@ -18,21 +18,6 @@ enum TripViewState {
     case error
 }
 
-extension UnitLength {
-
-    var name: String {
-        switch self {
-        case .miles:
-            return "Miles"
-        case .kilometers:
-            return "Kilometers"
-        default:
-            fatalError("Undefined unit length name")
-        }
-    }
-
-}
-
 class TripViewController: UIViewController {
 
     //MARK: Outlets
