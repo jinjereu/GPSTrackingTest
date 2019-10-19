@@ -130,7 +130,6 @@ class TripViewController: UIViewController {
             toLabel.isHidden = true
             useTripButton.isHidden = true
             unitSwitch.isHidden = false
-            mapView.isHidden = true
         case .tracking:
             startTripButton.isHidden = true
             stopTripButton.isHidden = false
@@ -138,13 +137,11 @@ class TripViewController: UIViewController {
             fromLabel.isHidden = false
             toLabel.isHidden = true
             unitSwitch.isHidden = true
-            mapView.isHidden = true
         case .saved:
             stopTripButton.isHidden = true
             fromLabel.isHidden = false
             toLabel.isHidden = false
             useTripButton.isHidden = false
-            mapView.isHidden = false
         case .error:
             dataStackView.isHidden = false
             showErrorAlert()
